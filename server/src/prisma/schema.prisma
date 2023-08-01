@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgres://postgres:postgres@localhost:5432/prisma-test_development"
+}
+
+model Song {
+  id          Int      @id @default(autoincrement()) 
+  name        String   @db.VarChar(255) @unique
+  description String?  @db.Text
+  plays       Int?     @db.Integer 
+  isCool      Boolean  @default(true)
+  albumId     Int      
+  album       Album    @relation(fields: [albumId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  createdAt   DateTime @default(now()) @db.Timestamp(6)
+  updatedAt   DateTime @default(now()) @db.Timestamp(6)
+}
+
+model Album {
+  id          Int      @id @default(autoincrement()) 
+  name        String   @db.VarChar(255) @unique
+  createdAt   DateTime @default(now()) @db.Timestamp(6)
+  updatedAt   DateTime @default(now()) @db.Timestamp(6)
+  songs       Song[]
+}
+
+model User {
+  id               Int      @id @default(autoincrement()) 
+  email            String   @db.VarChar(255) @unique
+  cryptedPassword  String   @db.VarChar(255)
+  createdAt        DateTime @default(now()) @db.Timestamp(6)
+  updatedAt        DateTime @default(now()) @db.Timestamp(6)
+}
