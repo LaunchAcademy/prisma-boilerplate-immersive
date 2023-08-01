@@ -1,14 +1,18 @@
-# Todo 
-- make routes for an squid review app
-    - index
-    - show 
-    - new/post
-    - edit/update
-    - delete 
-- update show to have associated reviews
-- update show to have associated biomes 
+## Prisma App Configured for Student Projects and New Curriculum
 
-## NonBlocking todo 
-- passport 
-- retrieving only specific attributes (serialization)
-- custom associations 
+```
+createdb prisma-test_development
+yarn install
+cd server
+npx prisma migrate reset
+cd ..
+yarn dev
+```
+
+### Missing
+- serialization (likely omit)
+- yup frontend validation
+- cypress db utilities
+
+
+
