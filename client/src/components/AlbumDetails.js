@@ -32,14 +32,14 @@ const AlbumShow = (props) => {
     getAlbum();
   }, []);
 
-  const postSong = async (newAlbumData) => {
+  const postSong = async (newSongData) => {
     try {
       const response = await fetch(`/api/v1/albums/${albumId}/songs`, {
         method: "POST",
         headers: new Headers({
           "Content-Type": "application/json",
         }),
-        body: JSON.stringify(newAlbumData),
+        body: JSON.stringify(newSongData),
       });
       if (!response.ok) {
         if (response.status === 422) {
