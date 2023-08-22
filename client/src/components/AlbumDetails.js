@@ -98,6 +98,37 @@ const AlbumShow = (props) => {
     }
   };
 
+  const deleteSong = async (songIdToDelete) => {
+    try {
+      const response = await fetch(`/api/v1/songs/${songIdToDelete}`, {
+        method: "DELETE",
+        headers: new Headers({
+          "Content-Type": "application/json",
+        }),
+      });
+      if (!response.ok) {
+        if (response.status === 422) {
+          const errorBody = await response.json();
+          console.log(errorBody);
+          // const serverErrors = translateServerErrors(errorBody.errors);
+          // console.log(serverErrors);
+        }
+        const errorMessage = `${response.status} (${response.statusText})`;
+        const error = new Error(errorMessage);
+        throw error;
+      } else {
+        // const responseBody = await response.json();
+        const remainingSongs = album.songs.filter((song) => song.id != songIdToDelete);
+        setAlbum({
+          ...album,
+          songs: remainingSongs,
+        });
+      }
+    } catch (error) {
+      console.error(`Error in fetch: ${error.message}`);
+    }
+  };
+
   const songTiles = album.songs.map((songObject) => {
     return (
       <SongTile
@@ -106,6 +137,7 @@ const AlbumShow = (props) => {
         setSongToEdit={setSongToEdit}
         songObject={songObject}
         patchSong={patchSong}
+        deleteSong={deleteSong}
       />
     );
   });
