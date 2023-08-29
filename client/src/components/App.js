@@ -5,12 +5,12 @@ import { hot } from "react-hot-loader/root";
 import "../assets/scss/main.scss";
 import getCurrentUser from "../services/getCurrentUser";
 
-import AlbumDetails from "./AlbumDetails";
-import AlbumsList from "./AlbumList";
-import NewAlbumForm from "./NewAlbumForm";
+import AlbumDetails from "./albums/AlbumDetails";
+import AlbumsList from "./albums/AlbumList";
+import NewAlbumForm from "./albums/NewAlbumForm";
 import RegistrationForm from "./registration/RegistrationForm";
 import SignInForm from "./authentication/SignInForm";
-import SongsList from "./SongsList";
+import SongsList from "./songs/SongsList";
 import TopBar from "./layout/TopBar";
 
 const App = (props) => {
@@ -35,7 +35,9 @@ const App = (props) => {
         <Route exact path="/" component={AlbumsList} />
         <Route exact path="/albums" component={AlbumsList} />
         <Route exact path="/albums/new" component={NewAlbumForm} />
-        <Route exact path="/albums/:id" component={AlbumDetails} />
+        <Route exact path="/albums/:id">
+          <AlbumDetails user={currentUser} />
+        </Route>
         <Route exact path="/songs" component={SongsList} />
 
         <Route exact path="/users/new" component={RegistrationForm} />

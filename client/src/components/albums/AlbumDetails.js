@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
-import NewSongForm from "./NewSongForm";
-import SongTile from "./SongTile";
+import NewSongForm from "../songs/NewSongForm";
+import SongTile from "../songs/SongTile";
 
 const AlbumShow = (props) => {
   const [album, setAlbum] = useState({
@@ -12,7 +13,7 @@ const AlbumShow = (props) => {
   const [songToEdit, setSongToEdit] = useState({});
   const [errors, setErrors] = useState({});
 
-  const albumId = props.match.params.id;
+  const { id: albumId } = useParams();
 
   const getAlbum = async () => {
     try {
@@ -66,7 +67,7 @@ const AlbumShow = (props) => {
 
   const patchSong = async (editedSong) => {
     try {
-      const response = await fetch(`/api/v1/albums/${albumId}/songs`, {
+      const response = await fetch(`/api/v1/songs/${editedSong.id}`, {
         method: "PATCH",
         headers: new Headers({
           "Content-Type": "application/json",
@@ -139,6 +140,7 @@ const AlbumShow = (props) => {
         songObject={songObject}
         patchSong={patchSong}
         deleteSong={deleteSong}
+        user={props.user}
       />
     );
   });

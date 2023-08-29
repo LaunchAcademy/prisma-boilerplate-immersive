@@ -25,22 +25,4 @@ albumSongsRouter.post("/", async (req, res) => {
   }
 });
 
-albumSongsRouter.patch("/", async (req, res) => {
-  try {
-    const { body } = req;
-    const cleanedFormData = cleanUserInput(body);
-    const { name, isCool, plays, description } = cleanedFormData;
-
-    const song = await prisma.song.update({
-      where: { id: body.id },
-      data: { name, isCool, plays, description },
-    });
-    return res.status(200).json({ song });
-  } catch (error) {
-    console.log(error);
-
-    return res.status(422).json({ errors: error });
-  }
-});
-
 export default albumSongsRouter;

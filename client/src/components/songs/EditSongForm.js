@@ -4,8 +4,8 @@ const EditSongForm = ({ songToEdit, patchSong }) => {
   const [song, setSong] = useState({
     name: songToEdit.name,
     description: songToEdit.description || "",
-    plays: songToEdit.plays || "",
-    isCool: songToEdit.isCool || "",
+    plays: songToEdit.plays || 0,
+    isCool: songToEdit.isCool,
   });
 
   const handleInputChange = (event) => {
@@ -72,7 +72,7 @@ const EditSongForm = ({ songToEdit, patchSong }) => {
 
         <label>
           Number of Times Song has been played:
-          <input type="text" name="plays" onChange={handleInputChange} value={song.plays} />
+          <input type="number" name="plays" onChange={handleInputChange} value={song.plays} />
         </label>
 
         <div className="button-group">
