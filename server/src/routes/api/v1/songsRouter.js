@@ -14,4 +14,15 @@ songsRouter.get("/", async (req, res) => {
   }
 });
 
+songsRouter.delete("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await prisma.song.delete({ where: { id: parseInt(id) } });
+    return res.status(200).json({ message: "song deleted" });
+  } catch (error) {
+    console.log(error);
+    return res.status(404).json({ errors: error });
+  }
+});
+
 export default songsRouter;
