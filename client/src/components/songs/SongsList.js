@@ -25,13 +25,17 @@ const SongsList = (props) => {
   }, []);
 
   const songsListItems = songs.map((songsItem) => {
-    // <Link to={`/songs/${songsItem.id}`}>{songsItem.name}</Link>
-    return <li key={songsItem.id}></li>;
+    return (
+      <li key={songsItem.id}>
+        <Link to={`/albums/${songsItem.albumId}`}>{songsItem.name}</Link>
+      </li>
+    );
   });
 
   return (
     <div>
       <h1>All Songs</h1>
+      <p>Select a song to see its album</p>
       <ul>{songsListItems}</ul>
     </div>
   );

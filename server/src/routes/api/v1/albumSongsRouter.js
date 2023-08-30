@@ -15,12 +15,18 @@ albumSongsRouter.post("/", async (req, res) => {
   try {
     const newSong = await prisma.song.create({
       data: { name, isCool, plays, description, albumId },
+      include: {
+        votes: true,
+        _count: {
+          select: { votes: true },
+        },
+      },
     });
+    newSong.totalVoteValue = 0;
 
     return res.status(201).json({ song: newSong });
   } catch (error) {
     console.log(error);
-
     return res.status(422).json({ errors: error });
   }
 });

@@ -53,23 +53,27 @@ albumsRouter.get("/:id", async (req, res) => {
 });
 
 albumsRouter.post("/", uploadImage.single("image"), async (req, res) => {
-  const { body, user } = req;
-  const cleanedFormData = cleanUserInput(body);
-  try {
-    let image;
-    if (req.file) {
-      image = req.file.location;
+  if (req.user) {
+    const { body, user } = req;
+    const cleanedFormData = cleanUserInput(body);
+    try {
+      let image;
+      if (req.file) {
+        image = req.file.location;
+      }
+      const albumData = {
+        ...cleanedFormData,
+        userId: user.id,
+        image,
+      };
+      const newAlbum = await prisma.album.create({ data: albumData });
+      return res.status(201).json({ album: newAlbum });
+    } catch (error) {
+      console.log(error);
+      return res.status(422).json({ errors: error });
     }
-    const albumData = {
-      ...cleanedFormData,
-      userId: user.id,
-      image,
-    };
-    const newAlbum = await prisma.album.create({ data: albumData });
-    return res.status(201).json({ album: newAlbum });
-  } catch (error) {
-    console.log(error);
-    return res.status(422).json({ errors: error });
+  } else {
+    return res.status(401).json({ message: "must be signed in" });
   }
 });
 

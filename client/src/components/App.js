@@ -5,6 +5,7 @@ import { hot } from "react-hot-loader/root";
 import "../assets/scss/main.scss";
 import getCurrentUser from "../services/getCurrentUser";
 
+import AuthenticatedRoute from "./authentication/AuthenticatedRoute";
 import AlbumDetails from "./albums/AlbumDetails";
 import AlbumsList from "./albums/AlbumList";
 import NewAlbumForm from "./albums/NewAlbumForm";
@@ -34,7 +35,12 @@ const App = (props) => {
       <Switch>
         <Route exact path="/" component={AlbumsList} />
         <Route exact path="/albums" component={AlbumsList} />
-        <Route exact path="/albums/new" component={NewAlbumForm} />
+        <AuthenticatedRoute
+          exact={true}
+          path="/albums/new"
+          component={NewAlbumForm}
+          user={currentUser}
+        />
         <Route exact path="/albums/:id">
           <AlbumDetails user={currentUser} />
         </Route>
