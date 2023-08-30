@@ -1,8 +1,14 @@
 import React, { useState } from "react";
+import Dropzone from "react-dropzone";
 import { Redirect } from "react-router-dom";
 
 const NewAlbumForm = (props) => {
   const [newAlbum, setNewAlbum] = useState({
+    name: "",
+    image: {},
+  });
+  const [uploadedImage, setUploadedImage] = useState({
+    preview: "",
     name: "",
   });
   const [shouldRedirect, setShouldRedirect] = useState(false);
@@ -11,16 +17,31 @@ const NewAlbumForm = (props) => {
     setNewAlbum({ ...newAlbum, [event.currentTarget.name]: event.currentTarget.value });
   };
 
+  const handleImageUpload = (acceptedImage) => {
+    setNewAlbum({
+      ...newAlbum,
+      image: acceptedImage[0],
+    });
+
+    setUploadedImage({
+      preview: URL.createObjectURL(acceptedImage[0]),
+      name: acceptedImage[0].name,
+    });
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const body = new FormData();
+    body.append("name", newAlbum.name);
+    body.append("image", newAlbum.image);
 
     try {
       const response = await fetch("/api/v1/albums", {
         method: "POST",
         headers: new Headers({
-          "Content-Type": "application/json",
+          Accept: "image/jpeg",
         }),
-        body: JSON.stringify(newAlbum),
+        body: body,
       });
       if (!response.ok) {
         if (response.status === 422) {
@@ -52,6 +73,18 @@ const NewAlbumForm = (props) => {
           Title
           <input type="text" id="name" name="name" value={newAlbum.name} onChange={handleChange} />
         </label>
+        <Dropzone onDrop={handleImageUpload}>
+          {({ getRootProps, getInputProps }) => (
+            <section>
+              <div {...getRootProps()}>
+                <input {...getInputProps()} />
+                <p>Upload Your Image - drag 'n' drop or click to upload</p>
+              </div>
+            </section>
+          )}
+        </Dropzone>
+        <img src={uploadedImage.preview} alt={uploadedImage.name} className="album-image" />
+
         <div className="button-group">
           <input type="submit" value="Add" className="button" />
         </div>

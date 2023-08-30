@@ -1,7 +1,9 @@
 import express from "express";
 
 import prisma from "../../../prisma/prisma.js";
+
 import cleanUserInput from "../../../services/cleanUserInput.js";
+import uploadImage from "../../../services/uploadImage.js";
 
 import albumSongsRouter from "./albumSongsRouter.js";
 
@@ -40,12 +42,20 @@ albumsRouter.get("/:id", async (req, res) => {
   }
 });
 
-albumsRouter.post("/", async (req, res) => {
-  const { body } = req;
+albumsRouter.post("/", uploadImage.single("image"), async (req, res) => {
+  const { body, user } = req;
   const cleanedFormData = cleanUserInput(body);
-  const { name } = cleanedFormData;
   try {
-    const newAlbum = await prisma.album.create({ data: { name } });
+    let image;
+    if (req.file) {
+      image = req.file.location;
+    }
+    const albumData = {
+      ...cleanedFormData,
+      userId: user.id,
+      image,
+    };
+    const newAlbum = await prisma.album.create({ data: albumData });
     return res.status(201).json({ album: newAlbum });
   } catch (error) {
     console.log(error);

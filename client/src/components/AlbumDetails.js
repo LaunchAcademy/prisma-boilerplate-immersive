@@ -6,6 +6,7 @@ import SongTile from "./SongTile";
 const AlbumShow = (props) => {
   const [album, setAlbum] = useState({
     name: "",
+    image: "",
     songs: [],
   });
   const [songToEdit, setSongToEdit] = useState({});
@@ -143,13 +144,26 @@ const AlbumShow = (props) => {
   });
 
   return (
-    <div>
+    <div className="callout">
       <h1>Album Name: {album.name}</h1>
+      {album.image ? (
+        <img src={album.image} alt={album.name} className="album-image" />
+      ) : (
+        <p>No album artwork</p>
+      )}
+
       <div className="callout primary">
         <NewSongForm postSong={postSong} />
       </div>
-      <h4>Songs:</h4>
-      <div className="callout secondary">{songTiles}</div>
+
+      <div className="callout">
+        <h4>Songs:</h4>
+        {songTiles.length > 0 ? (
+          <div className="callout secondary">{songTiles}</div>
+        ) : (
+          <p>No songs have been added yet</p>
+        )}
+      </div>
     </div>
   );
 };
