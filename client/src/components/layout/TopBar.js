@@ -28,6 +28,12 @@ const TopBar = ({ user }) => {
           <li>
             <Link to="/">Home</Link>
           </li>
+          <li>
+            <Link to="/albums">Albums</Link>
+          </li>
+          <li>
+            <Link to="/songs">Songs</Link>
+          </li>
         </ul>
       </div>
       <div className="top-bar-right">

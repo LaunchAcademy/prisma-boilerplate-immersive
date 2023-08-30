@@ -15,30 +15,18 @@ albumSongsRouter.post("/", async (req, res) => {
   try {
     const newSong = await prisma.song.create({
       data: { name, isCool, plays, description, albumId },
+      include: {
+        votes: true,
+        _count: {
+          select: { votes: true },
+        },
+      },
     });
+    newSong.totalVoteValue = 0;
 
     return res.status(201).json({ song: newSong });
   } catch (error) {
     console.log(error);
-
-    return res.status(422).json({ errors: error });
-  }
-});
-
-albumSongsRouter.patch("/", async (req, res) => {
-  try {
-    const { body } = req;
-    const cleanedFormData = cleanUserInput(body);
-    const { name, isCool, plays, description } = cleanedFormData;
-
-    const song = await prisma.song.update({
-      where: { id: body.id },
-      data: { name, isCool, plays, description },
-    });
-    return res.status(200).json({ song });
-  } catch (error) {
-    console.log(error);
-
     return res.status(422).json({ errors: error });
   }
 });
