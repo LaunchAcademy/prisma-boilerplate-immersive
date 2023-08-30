@@ -27,7 +27,9 @@ albumsRouter.get("/:id", async (req, res) => {
         id: parseInt(req.params.id),
       },
       include: {
-        songs: true,
+        songs: {
+          orderBy: { id: "asc" },
+        },
       },
     });
 
