@@ -31,9 +31,19 @@ albumsRouter.get("/:id", async (req, res) => {
       include: {
         songs: {
           orderBy: { id: "asc" },
+          include: {
+            votes: true,
+            _count: {
+              select: { votes: true },
+            },
+          },
         },
       },
     });
+
+    for (const song of album.songs) {
+      song.totalVoteValue = song.votes.reduce((total, vote) => total + vote.value, 0);
+    }
 
     return res.status(200).json({ album });
   } catch (error) {

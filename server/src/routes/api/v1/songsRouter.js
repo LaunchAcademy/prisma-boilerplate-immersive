@@ -4,7 +4,11 @@ import prisma from "../../../prisma/prisma.js";
 
 import cleanUserInput from "../../../services/cleanUserInput.js";
 
+import songVotesRouter from "./songVotesRouter.js";
+
 const songsRouter = new express.Router();
+
+songsRouter.use("/:songId/votes", songVotesRouter);
 
 songsRouter.get("/", async (req, res) => {
   try {

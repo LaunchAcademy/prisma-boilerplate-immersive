@@ -131,6 +131,40 @@ const AlbumShow = (props) => {
     }
   };
 
+  const songVote = async ({ songId, voteValue }) => {
+    try {
+      const response = await fetch(`/api/v1/songs/${songId}/votes`, {
+        method: "POST",
+        headers: new Headers({
+          "Content-Type": "application/json",
+        }),
+        body: JSON.stringify({ voteValue }),
+      });
+      if (!response.ok) {
+        if (response.status === 422) {
+          const errorBody = await response.json();
+          console.log(errorBody);
+          // const serverErrors = translateServerErrors(errorBody.errors);
+          // console.log(serverErrors);
+        }
+        const errorMessage = `${response.status} (${response.statusText})`;
+        const error = new Error(errorMessage);
+        throw error;
+      } else {
+        const responseBody = await response.json();
+        const updatedSong = responseBody.song;
+        const updatedSongIndex = album.songs.findIndex((song) => song.id === updatedSong.id);
+        const songsCopy = [...album.songs];
+        songsCopy.splice(updatedSongIndex, 1, updatedSong);
+
+        setErrors([]);
+        setAlbum({ ...album, songs: songsCopy });
+      }
+    } catch (error) {
+      console.error(`Error in fetch: ${error.message}`);
+    }
+  };
+
   const songTiles = album.songs.map((songObject) => {
     return (
       <SongTile
@@ -140,6 +174,7 @@ const AlbumShow = (props) => {
         songObject={songObject}
         patchSong={patchSong}
         deleteSong={deleteSong}
+        songVote={songVote}
         user={props.user}
       />
     );

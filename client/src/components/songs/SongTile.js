@@ -2,7 +2,15 @@ import React, { useState } from "react";
 
 import EditSongForm from "./EditSongForm";
 
-const SongTile = ({ songObject, setSongToEdit, songToEdit, patchSong, deleteSong, user }) => {
+const SongTile = ({
+  songObject,
+  setSongToEdit,
+  songToEdit,
+  patchSong,
+  deleteSong,
+  songVote,
+  user,
+}) => {
   const [shouldDelete, setShouldDelete] = useState(false);
 
   const handleEdit = () => {
@@ -17,9 +25,36 @@ const SongTile = ({ songObject, setSongToEdit, songToEdit, patchSong, deleteSong
     deleteSong(songObject.id);
   };
 
+  const handleVote = (voteValue) => {
+    songVote({ songId: songObject.id, voteValue });
+  };
+
+  const userSelectedVote = songObject.votes.find((vote) => vote.userId === user?.id);
+
   return (
     <div className="callout">
-      <p>{songObject.name}</p>
+      <div className="grid-x">
+        <p className="cell small-6">{songObject.name}</p>
+        <p>
+          Rating: {songObject.totalVoteValue} / {songObject._count.votes}
+        </p>
+        {user ? (
+          <div className="cell small-6 grid-x">
+            <p
+              className={`cell small-6 ${userSelectedVote?.value === 1 ? "voted" : null}`}
+              onClick={() => handleVote(1)}
+            >
+              upvote
+            </p>
+            <p
+              className={`cell small-6 ${userSelectedVote?.value === -1 ? "voted" : null}`}
+              onClick={() => handleVote(-1)}
+            >
+              downvote
+            </p>
+          </div>
+        ) : null}
+      </div>
       <ul>
         <li>{songObject.isCool ? "Super Cool" : "Kinda Lame"}</li>
         <li>Description: {songObject.description}</li>

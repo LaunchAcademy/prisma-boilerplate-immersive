@@ -25,10 +25,8 @@ const SongsList = (props) => {
   }, []);
 
   const songsListItems = songs.map((songsItem) => {
-    // <Link to={`/songs/${songsItem.id}`}>
-    //     {songsItem.name}
-    // </Link>
-    return <li key={songsItem.id}>{songsItem.name}</li>;
+    // <Link to={`/songs/${songsItem.id}`}>{songsItem.name}</Link>
+    return <li key={songsItem.id}></li>;
   });
 
   return (
