@@ -1,6 +1,10 @@
 import React, { useState } from "react";
-import FormError from "../layout/FormError";
+
 import config from "../../config";
+import translateServerErrors from "../../services/translateServerErrors";
+
+import ErrorList from "../layout/ErrorList";
+import FormError from "../layout/FormError";
 
 const RegistrationForm = () => {
   const [userPayload, setUserPayload] = useState({
@@ -10,13 +14,14 @@ const RegistrationForm = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [serverErrors, setServerErrors] = useState({});
 
   const [shouldRedirect, setShouldRedirect] = useState(false);
 
   const validateInput = (payload) => {
     setErrors({});
     const { email, password, passwordConfirmation } = payload;
-    const emailRegexp = config.validation.email.regexp;
+    const emailRegexp = config.validation.email.regexp.emailRegex;
     let newErrors = {};
     if (!email.match(emailRegexp)) {
       newErrors = {
@@ -47,21 +52,30 @@ const RegistrationForm = () => {
     }
 
     setErrors(newErrors);
+    if (Object.keys(newErrors).length === 0) {
+      return true;
+    }
+    return false;
   };
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    validateInput(userPayload);
+
     try {
-      if (Object.keys(errors).length === 0) {
+      if (validateInput(userPayload)) {
         const response = await fetch("/api/v1/users", {
-          method: "post",
+          method: "POST",
           body: JSON.stringify(userPayload),
           headers: new Headers({
             "Content-Type": "application/json",
           }),
         });
         if (!response.ok) {
+          if (response.status === 422) {
+            const errorBody = await response.json();
+            const newServerErrors = translateServerErrors(errorBody.errors);
+            setServerErrors(newServerErrors);
+          }
           const errorMessage = `${response.status} (${response.statusText})`;
           const error = new Error(errorMessage);
           throw error;
@@ -88,6 +102,7 @@ const RegistrationForm = () => {
   return (
     <div className="grid-container">
       <h1>Register</h1>
+      <ErrorList errors={serverErrors} />
       <form onSubmit={onSubmit}>
         <div>
           <label>
