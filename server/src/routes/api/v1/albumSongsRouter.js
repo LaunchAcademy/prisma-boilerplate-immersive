@@ -11,6 +11,7 @@ albumSongsRouter.post("/", async (req, res) => {
   const cleanedFormData = cleanUserInput(body);
   const { name, isCool, plays, description } = cleanedFormData;
   const albumId = parseInt(req.params.albumId);
+  // prisma steps in with validation before postgres can type coerce, have to manually parse to int
 
   try {
     const newSong = await prisma.song.create({
@@ -23,6 +24,10 @@ albumSongsRouter.post("/", async (req, res) => {
       },
     });
     newSong.totalVoteValue = 0;
+    // consider serializer/ method for calculating vote values
+    // include all votes
+    // count the number of votes
+    // calculate total vote value (just created, so will be 0, no votes)
 
     return res.status(201).json({ song: newSong });
   } catch (error) {

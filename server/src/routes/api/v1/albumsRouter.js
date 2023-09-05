@@ -29,6 +29,7 @@ albumsRouter.get("/:id", async (req, res) => {
         id: parseInt(req.params.id),
       },
       include: {
+        user: true,
         songs: {
           orderBy: { id: "asc" },
           include: {
@@ -40,10 +41,15 @@ albumsRouter.get("/:id", async (req, res) => {
         },
       },
     });
+    console.log("pre reduce", album);
+    // orderBy so that order is consistent, even after a record has been edited
 
     for (const song of album.songs) {
       song.totalVoteValue = song.votes.reduce((total, vote) => total + vote.value, 0);
     }
+    console.log("post reduce", album);
+    // manually calculate total song value (look into aggregate?)
+    // tried _sum and _avg, but both lead to query errors
 
     return res.status(200).json({ album });
   } catch (error) {
@@ -57,14 +63,14 @@ albumsRouter.post("/", uploadImage.single("image"), async (req, res) => {
     const { body, user } = req;
     const cleanedFormData = cleanUserInput(body);
     try {
-      let image;
-      if (req.file) {
-        image = req.file.location;
-      }
+      // VSCode yells with a parsing error with trying to use conditional chaining
+      // image = req.file?.location;
+      // so instead using a ternary to conditionally set image
+      // is optional field, need to handle for case when req.file.location is undefined
       const albumData = {
         ...cleanedFormData,
         userId: user.id,
-        image,
+        image: req.file ? req.file.location : null,
       };
       const newAlbum = await prisma.album.create({ data: albumData });
       return res.status(201).json({ album: newAlbum });

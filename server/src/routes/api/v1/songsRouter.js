@@ -24,6 +24,7 @@ songsRouter.get("/", async (req, res) => {
 songsRouter.patch("/:id", async (req, res) => {
   try {
     if (req.user) {
+      // make sure a user is signed in, however no user is associated with a song
       const { id } = req.params;
       const { body } = req;
       const cleanedFormData = cleanUserInput(body);
@@ -32,7 +33,15 @@ songsRouter.patch("/:id", async (req, res) => {
       const song = await prisma.song.update({
         where: { id: parseInt(id) },
         data: { name, isCool, plays, description },
+        include: {
+          votes: true,
+          _count: {
+            select: { votes: true },
+          },
+        },
       });
+      song.totalVoteValue = song.votes.reduce((total, vote) => total + vote.value, 0);
+
       return res.status(200).json({ song });
     } else {
       return res.status(401).json({ message: "must be signed in" });
