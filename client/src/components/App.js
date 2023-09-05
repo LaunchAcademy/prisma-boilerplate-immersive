@@ -13,6 +13,8 @@ import RegistrationForm from "./registration/RegistrationForm";
 import SignInForm from "./authentication/SignInForm";
 import SongsList from "./songs/SongsList";
 import TopBar from "./layout/TopBar";
+import UserMessage from "./messages/UserMessage";
+import UserProfile from "./users/UserProfile";
 
 const App = (props) => {
   const [currentUser, setCurrentUser] = useState(undefined);
@@ -48,6 +50,19 @@ const App = (props) => {
 
         <Route exact path="/users/new" component={RegistrationForm} />
         <Route exact path="/user-sessions/new" component={SignInForm} />
+
+        <AuthenticatedRoute
+          exact={true}
+          path="/users/:id/messages"
+          component={UserMessage}
+          user={currentUser}
+        />
+        <AuthenticatedRoute
+          exact={true}
+          path="/users/:id"
+          component={UserProfile}
+          user={currentUser}
+        />
       </Switch>
     </Router>
   );

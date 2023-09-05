@@ -14,6 +14,7 @@ songVotesRouter.post("/", async (req, res) => {
     const cleanedFormData = cleanUserInput(body);
     const { voteValue } = cleanedFormData;
 
+    // queue up query for song to recalculate vote totals
     const songQuery = prisma.song.findUnique({
       where: {
         id: songId,

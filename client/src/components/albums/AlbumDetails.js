@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 import NewSongForm from "../songs/NewSongForm";
 import SongTile from "../songs/SongTile";
@@ -8,6 +8,7 @@ const AlbumShow = (props) => {
   const [album, setAlbum] = useState({
     name: "",
     image: "",
+    user: {},
     songs: [],
   });
   const [songToEdit, setSongToEdit] = useState({});
@@ -180,9 +181,19 @@ const AlbumShow = (props) => {
     );
   });
 
+  let submittedBy = album.user.email;
+  let submittedByLinkAddress = `/users/${album.user.id}/messages`;
+  if (album.user.id === props.user?.id) {
+    submittedBy = "You";
+    submittedByLinkAddress = `/users/${props.user?.id}`;
+  }
+
   return (
     <div className="callout">
       <h1>Album Name: {album.name}</h1>
+      <p>
+        submitted by: <Link to={submittedByLinkAddress}>{submittedBy}</Link>
+      </p>
       {album.image ? (
         <img src={album.image} alt={album.name} className="album-image" />
       ) : (
