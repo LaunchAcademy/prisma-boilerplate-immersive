@@ -2,8 +2,6 @@ import express from "express";
 
 import prisma from "../../../prisma/prisma.js";
 
-import cleanUserInput from "../../../services/cleanUserInput.js";
-
 import songVotesRouter from "./songVotesRouter.js";
 
 const songsRouter = new express.Router();
@@ -27,8 +25,7 @@ songsRouter.patch("/:id", async (req, res) => {
       // make sure a user is signed in, however no user is associated with a song
       const { id } = req.params;
       const { body } = req;
-      const cleanedFormData = cleanUserInput(body);
-      const { name, isCool, plays, description } = cleanedFormData;
+      const { name, isCool, plays, description } = body;
 
       const song = await prisma.song.update({
         where: { id: parseInt(id) },

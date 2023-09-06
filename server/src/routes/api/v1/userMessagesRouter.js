@@ -1,8 +1,6 @@
 import express from "express";
 import prisma from "../../../prisma/prisma.js";
 
-import cleanUserInput from "../../../services/cleanUserInput.js";
-
 const userMessagesRouter = new express.Router({ mergeParams: true });
 
 userMessagesRouter.get("/", async (req, res) => {
@@ -57,8 +55,7 @@ userMessagesRouter.get("/", async (req, res) => {
 userMessagesRouter.post("/", async (req, res) => {
   if (req.user) {
     const currentUser = req.user;
-    const cleanedFormData = cleanUserInput(req.body);
-    const { body } = cleanedFormData;
+    const { body } = req;
     const userId = parseInt(req.params.userId);
 
     try {

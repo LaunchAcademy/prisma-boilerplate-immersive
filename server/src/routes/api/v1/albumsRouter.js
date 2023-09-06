@@ -2,7 +2,6 @@ import express from "express";
 
 import prisma from "../../../prisma/prisma.js";
 
-import cleanUserInput from "../../../services/cleanUserInput.js";
 import uploadImage from "../../../services/uploadImage.js";
 
 import albumSongsRouter from "./albumSongsRouter.js";
@@ -61,14 +60,13 @@ albumsRouter.get("/:id", async (req, res) => {
 albumsRouter.post("/", uploadImage.single("image"), async (req, res) => {
   if (req.user) {
     const { body, user } = req;
-    const cleanedFormData = cleanUserInput(body);
     try {
       // VSCode yells with a parsing error with trying to use conditional chaining
       // image = req.file?.location;
       // so instead using a ternary to conditionally set image
       // is optional field, need to handle for case when req.file.location is undefined
       const albumData = {
-        ...cleanedFormData,
+        ...body,
         userId: user.id,
         image: req.file ? req.file.location : null,
       };
