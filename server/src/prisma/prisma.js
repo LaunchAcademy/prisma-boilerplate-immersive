@@ -1,11 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 
-import addYupValidationMiddleWare from "./validationSchema/config/addYupValidationMiddleWare.js";
-import validations from "./validationSchema/validations.js"
+import yupValidationPrismaClient from "./config/yupValidationPrismaClient.js";
 
-const prisma = new PrismaClient();
+// await prisma.song.create({ data: { name: "lets go6", isCool: true, plays: "2", albumId: "2" } })
 
-prisma.$use(addYupValidationMiddleWare(validations))
 
+const prisma = new PrismaClient().$extends(yupValidationPrismaClient);
 
 export default prisma
