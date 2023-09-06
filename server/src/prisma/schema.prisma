@@ -17,20 +17,50 @@ model Song {
   album       Album    @relation(fields: [albumId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   createdAt   DateTime @default(now()) @db.Timestamp(6)
   updatedAt   DateTime @default(now()) @db.Timestamp(6)
+  votes       Vote[]
 }
 
 model Album {
   id          Int      @id @default(autoincrement()) 
   name        String   @db.VarChar(255) @unique
+  image       String?  @db.VarChar(255)
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   createdAt   DateTime @default(now()) @db.Timestamp(6)
   updatedAt   DateTime @default(now()) @db.Timestamp(6)
   songs       Song[]
 }
 
 model User {
-  id               Int      @id @default(autoincrement()) 
-  email            String   @db.VarChar(255) @unique
-  cryptedPassword  String   @db.VarChar(255)
-  createdAt        DateTime @default(now()) @db.Timestamp(6)
-  updatedAt        DateTime @default(now()) @db.Timestamp(6)
+  id                  Int       @id @default(autoincrement()) 
+  email               String    @db.VarChar(255) @unique
+  cryptedPassword     String    @db.VarChar(255)
+  createdAt           DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt           DateTime  @default(now()) @db.Timestamp(6)
+  albums              Album[]
+  votes               Vote[]
+  sentMessages      Message[] @relation("sender")
+  receivedMessages   Message[] @relation("recipient")
+}
+
+model Vote {
+  id        Int      @id @default(autoincrement())
+  value     Int      @db.Integer
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  songId    Int
+  song      Song     @relation(fields: [songId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime @default(now()) @db.Timestamp(6)
+}
+
+model Message {
+  id          Int      @id @default(autoincrement())
+  body        String
+  senderId    Int
+  sender      User     @relation(name: "sender", fields: [senderId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  recipientId Int
+  recipient   User     @relation(name: "recipient", fields: [recipientId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  createdAt   DateTime @default(now()) @db.Timestamp(6)
+  updatedAt   DateTime @default(now()) @db.Timestamp(6)
 }

@@ -1,49 +1,66 @@
-import prisma from "./prisma.js"
+import prisma from "./prisma.js";
 
 const main = async () => {
-    const albums = await prisma.album.createMany({
-        data: [
-            {
-                name: "The Good Life",
+  const kerrin = await prisma.user.upsert({
+    where: { email: "kerrin@email.com" },
+    update: {},
+    create: {
+      email: "kerrin@email.com",
+      cryptedPassword: "password",
+      albums: {
+        create: {
+          name: "Help",
+          songs: {
+            create: {
+              name: "Help 3",
+              plays: 2,
+              isCool: false,
+              description: "oldie",
             },
-            {
-                name: "Help",
-            }
-        ]
-    })
+          },
+        },
+      },
+    },
+  });
 
-    const songs = await prisma.song.createMany({
-        data: [
-            {
-                name: "Kick It To Me 3",
+  const nick = await prisma.user.upsert({
+    where: { email: "nick@email.com" },
+    update: {},
+    create: {
+      email: "nick@email.com",
+      cryptedPassword: "password",
+      albums: {
+        create: {
+          name: "The Good Life",
+          songs: {
+            create: [
+              {
+                name: "Kick It To Me",
                 plays: 11,
                 isCool: true,
                 description: "this is a great song",
-                albumId: 1
-            },
-            {
-                name: "Jackie Onasis 3",
+              },
+              {
+                name: "Jackie Onasis",
                 plays: 5,
                 isCool: true,
                 description: "technically also great",
-                albumId: 1
-            },
-            {
-                name: "Help 3",
-                plays: 2,
-                isCool: false,
-                description: "oldie",
-                albumId: 2
-            }
-        ]
-    })
-}
+              },
+            ],
+          },
+        },
+      },
+    },
+  });
+
+  console.log({ kerrin, nick });
+};
 
 main()
-    .catch((e) => {
-        console.error(e);
-        process.exit(1);
-    })
-    .finally(async () => {
-        await prisma.$disconnect();
-    });
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

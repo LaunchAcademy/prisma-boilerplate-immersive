@@ -1,28 +1,28 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import bcrypt from "bcrypt"
+import bcrypt from "bcrypt";
 import prisma from "../prisma/prisma.js";
 
 const saltRounds = 10;
 
 class AuthService {
-    static async register(data) {
-        const { email } = data;
-        
-        const cryptedPassword = bcrypt.hashSync(data.password, 8);
+  static async register(data) {
+    const { email } = data;
 
-        const user = await prisma.user.create({ 
-            data: { 
-                email: email,
-                cryptedPassword: cryptedPassword
-            }   
-        })
+    const cryptedPassword = bcrypt.hashSync(data.password, 8);
 
-        return user;
-    }
+    const user = await prisma.user.create({
+      data: {
+        email: email,
+        cryptedPassword: cryptedPassword,
+      },
+    });
 
-    authenticate(password, cryptedPassword) {
-        return Bcrypt.compareSync(password, cryptedPassword);
-    }
+    return user;
+  }
+
+  static authenticate(password, cryptedPassword) {
+    return bcrypt.compareSync(password, cryptedPassword);
+  }
 }
 
 export default AuthService
