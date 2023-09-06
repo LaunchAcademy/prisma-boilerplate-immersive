@@ -43,9 +43,13 @@ const App = (props) => {
           component={NewAlbumForm}
           user={currentUser}
         />
-        <Route exact path="/albums/:id">
-          <AlbumDetails user={currentUser} />
-        </Route>
+        <Route
+          exact
+          path="/albums/:id"
+          render={(props) => {
+            return <AlbumDetails user={currentUser} {...props} />;
+          }}
+        />
         <Route exact path="/songs" component={SongsList} />
 
         <Route exact path="/users/new" component={RegistrationForm} />
