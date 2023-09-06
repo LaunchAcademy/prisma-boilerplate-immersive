@@ -6,7 +6,7 @@ const songSchema = {
     schema: yup.object().shape({
         name: yup.string().required(),
         description: yup.string(),
-        plays: yup.mixed().transform((value, originalValue) => {
+        plays: yup.number().integer().transform((value, originalValue) => {
             if (typeof originalValue === 'string') {
                 const parsedValue = parseInt(originalValue, 10);
                 if (!isNaN(parsedValue)) {
@@ -15,7 +15,7 @@ const songSchema = {
             }
             return value;
         }).nullable(true),
-        isCool: yup.mixed().transform((value, originalValue) => {
+        isCool: yup.boolean().transform((value, originalValue) => {
             if (typeof originalValue === 'string') {
                 if (originalValue === 'true') {
                     return true;
@@ -25,16 +25,7 @@ const songSchema = {
             }
             return value;
         }).required(),
-        albumId: yup.mixed().transform((value, originalValue) => {
-            if (typeof originalValue === 'string') {
-                const parsedValue = parseInt(originalValue, 10);
-                if (!isNaN(parsedValue)) {
-                    return parsedValue;
-                }
-            }
-            return value;
-        }).required(),
-        albumId: yup.mixed().transform((value, originalValue) => {
+        albumId: yup.number().integer().transform((value, originalValue) => {
             if (typeof originalValue === 'string') {
                 const parsedValue = parseInt(originalValue, 10);
                 if (!isNaN(parsedValue)) {
