@@ -1,6 +1,6 @@
 import express from "express"
 import prisma from "../../../prisma/prisma.js"
-import cleanUserInput from "../../../servies/cleanUserInput.js"
+import cleanUserInput from "../../../services/cleanUserInput.js"
 
 const albumSongsRouter = new express.Router({ mergeParams: true })
 

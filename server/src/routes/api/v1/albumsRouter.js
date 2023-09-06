@@ -28,8 +28,6 @@ albumsRouter.get("/:id", async (req, res) => {
             }
         })
 
-        
-
         return res.status(201).json({ album });
     } catch (error) {
         console.log(error);

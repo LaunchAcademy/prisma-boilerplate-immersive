@@ -26,26 +26,3 @@ class AuthService {
 }
 
 export default AuthService
-// export default AuthService
-
-
-// class UserAuth  {
-
-//     set password(newPassword) {
-//         this.cryptedPassword = Bcrypt.hashSync(newPassword, saltRounds);
-//     }
-
-
-
-//     formatJson(json) {
-//         const serializedJson = super.$formatJson(json);
-
-//         if (serializedJson.cryptedPassword) {
-//             delete serializedJson.cryptedPassword;
-//         }
-
-//         return serializedJson;
-//     }
-// }
-
-// module.exports = User;

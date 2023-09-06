@@ -1,5 +1,11 @@
-import { PrismaClient } from "@prisma/client"
+import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient()
+import addYupValidationMiddleWare from "./validationSchema/config/addYupValidationMiddleWare.js";
+import validations from "./validationSchema/validations.js"
+
+const prisma = new PrismaClient();
+
+prisma.$use(addYupValidationMiddleWare(validations))
+
 
 export default prisma
