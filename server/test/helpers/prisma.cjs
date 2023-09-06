@@ -1,9 +1,9 @@
-import bcrypt from "bcrypt";
-import { PrismaClient } from "@prisma/client";
+// commonjs version of prisma initialization for cypress to use
+const bcrypt = require("bcrypt");
+const { PrismaClient } = require("@prisma/client");
 
 const saltRounds = 8;
 
-// extended user to encrypt password before create or upsert
 const prisma = new PrismaClient().$extends({
   name: "encrypt user password",
   query: {
@@ -29,4 +29,4 @@ const prisma = new PrismaClient().$extends({
   },
 });
 
-export default prisma;
+module.exports = prisma;

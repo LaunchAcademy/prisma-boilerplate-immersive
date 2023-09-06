@@ -41,13 +41,11 @@ albumsRouter.get("/:id", async (req, res) => {
         },
       },
     });
-    console.log("pre reduce", album);
     // orderBy so that order is consistent, even after a record has been edited
 
     for (const song of album.songs) {
       song.totalVoteValue = song.votes.reduce((total, vote) => total + vote.value, 0);
     }
-    console.log("post reduce", album);
     // manually calculate total song value (look into aggregate?)
     // tried _sum and _avg, but both lead to query errors
 

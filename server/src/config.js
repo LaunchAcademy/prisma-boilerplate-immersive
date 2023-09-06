@@ -12,6 +12,7 @@ const development = {
   web: { host: process.env.HOST || "0.0.0.0", port: process.env.PORT || 3000 },
 };
 
+const e2e = { ...development };
 const test = { ...development };
 
 const production = {
@@ -19,6 +20,6 @@ const production = {
   s3Bucket: { name: process.env.S3_BUCKET_PRODUCTION },
 };
 
-const config = { development, test, production };
+const config = { development, e2e, test, production };
 
 export default config[getNodeEnv()];
