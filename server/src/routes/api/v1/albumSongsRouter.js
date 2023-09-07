@@ -5,12 +5,11 @@ const albumSongsRouter = new express.Router({ mergeParams: true });
 
 albumSongsRouter.post("/", async (req, res) => {
   const { body } = req;
-  const { name, isCool, plays, description } = body;
   const albumId = req.params.albumId;
 
   try {
     const newSong = await prisma.song.create({
-      data: { name, isCool, plays, description, albumId },
+      data: { ...body, albumId },
       include: {
         votes: true,
         _count: {
@@ -19,10 +18,6 @@ albumSongsRouter.post("/", async (req, res) => {
       },
     });
     newSong.totalVoteValue = 0;
-    // consider serializer/ method for calculating vote values
-    // include all votes
-    // count the number of votes
-    // calculate total vote value (just created, so will be 0, no votes)
 
     return res.status(201).json({ song: newSong });
   } catch (error) {
