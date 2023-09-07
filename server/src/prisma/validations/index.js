@@ -1,5 +1,5 @@
-import songSchema from "./songSchema.js";
-import userSchema from "./userSchema.js";
-import albumSchema from "./albumSchema.js";
+import SongSchema from "./SongSchema.js";
+import UserSchema from "./UserSchema.js";
+import AlbumSchema from "./AlbumSchema.js";
 
-export default { songSchema, userSchema, albumSchema };
+export default { SongSchema, UserSchema, AlbumSchema };

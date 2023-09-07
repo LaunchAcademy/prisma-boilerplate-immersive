@@ -1,6 +1,6 @@
 import yup from "yup";
 
-const userSchema = {
+const UserSchema = {
   modelName: "User",
   schema: yup.object().shape({
     email: yup.string().required(),
@@ -8,4 +8,4 @@ const userSchema = {
   }),
 };
 
-export default userSchema;
+export default UserSchema;

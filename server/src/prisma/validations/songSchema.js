@@ -1,9 +1,6 @@
 import yup from "yup";
-import { ValidationError } from "yup";
 
-const songSchema = {
-  modelName: "Song",
-  schema: yup.object().shape({
+const SongSchema = yup.object().shape({
     name: yup.string().required(),
     description: yup.string(),
     plays: yup
@@ -45,7 +42,6 @@ const songSchema = {
         return value;
       })
       .required(),
-  }),
-};
+  })
 
-export default songSchema;
+export default SongSchema;

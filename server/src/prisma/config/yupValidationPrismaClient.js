@@ -1,49 +1,29 @@
-import getValidation from "./getValidation.js";
 import { ValidationError } from "yup";
 
 const mutativeActions = ["create", "update", "upsert"];
 
-mutativeActions.map((action) => {});
+const customMutativeQueries = {}
+mutativeActions.forEach(action => {
+  customMutativeQueries[action] = async ({ model, operation, args, query }) => {
+    let transformedData;
+    try {
+      const { default: schema } = await import(`./../validations/${model}Schema.js`)
+      transformedData = await schema.validate(args.data, { abortEarly: false });
+    } catch (error) {
+      throw new ValidationError(error.errors);
+    }
+
+    const transformedArgsData = { data: transformedData };
+    return query(transformedArgsData);
+  }
+})
 
 const yupValidationPrismaClient = {
   name: "YupValidationPrismaClient",
   query: {
-    $allModels: {
-      async create({ model, operation, args, query }) {
-        let transformedData;
-        try {
-          transformedData = await getValidation(model).validate(args.data, { abortEarly: false });
-        } catch (error) {
-          throw new ValidationError(error.errors);
-        }
-
-        const transformedArgsData = { data: transformedData };
-        return query(transformedArgsData);
-      },
-      async update({ model, operation, args, query }) {
-        let transformedData;
-        try {
-          transformedData = await getValidation(model).validate(args.data, { abortEarly: false });
-        } catch (error) {
-          throw new ValidationError(error.errors);
-        }
-
-        const transformedArgsData = { data: transformedData };
-        return query(transformedArgsData);
-      },
-      async upsert({ model, operation, args, query }) {
-        let transformedData;
-        try {
-          transformedData = await getValidation(model).validate(args.data, { abortEarly: false });
-        } catch (error) {
-          throw new ValidationError(error.errors);
-        }
-
-        const transformedArgsData = { data: transformedData };
-        return query(transformedArgsData);
-      },
-    },
+    $allModels: customMutativeQueries
   },
 };
 
 export default yupValidationPrismaClient;
+

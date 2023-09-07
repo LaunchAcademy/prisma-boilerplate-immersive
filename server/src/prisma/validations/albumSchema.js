@@ -1,10 +1,10 @@
 import yup from "yup";
 
-const albumSchema = {
+const AlbumSchema = {
   modelName: "Album",
   schema: yup.object().shape({
     name: yup.string().required(),
   }),
 };
 
-export default albumSchema;
+export default AlbumSchema;
