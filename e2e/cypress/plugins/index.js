@@ -1,10 +1,4 @@
-const {
-  insert,
-  truncate,
-  // find,
-  // deleteRecords,
-  // update
-} = require("./db.js");
+const { insert, insertMany, truncate, find, deleteRecords, update } = require("./db.js");
 
 /// <reference types="cypress" />
 /**
@@ -19,15 +13,18 @@ module.exports = (on, config) => {
     "db:insert"({ modelName, data }) {
       return insert({ modelName, data });
     },
-    // "db:find"({ modelName, conditions }) {
-    //   return find({ modelName, conditions });
-    // },
-    // "db:delete"({ modelName, conditions }) {
-    //   return deleteRecords({ modelName, conditions });
-    // },
-    // "db:update"({ modelName, conditions, json }) {
-    //   return update({ modelName, conditions, json });
-    // },
+    "db:insertMany"({ modelName, data }) {
+      return insertMany({ modelName, data });
+    },
+    "db:find"({ modelName, conditions }) {
+      return find({ modelName, conditions });
+    },
+    "db:delete"({ modelName, conditions }) {
+      return deleteRecords({ modelName, conditions });
+    },
+    "db:update"({ modelName, conditions, data }) {
+      return update({ modelName, conditions, data });
+    },
   });
   return config;
 };

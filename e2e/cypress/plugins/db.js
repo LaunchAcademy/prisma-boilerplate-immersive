@@ -1,5 +1,5 @@
+const prisma = require("../../../server/src/prisma/prisma.cjs");
 const truncateModel = require("../../../server/test/utils/truncateModel.cjs");
-const prisma = require("../../../server/test/helpers/prisma.cjs");
 
 const truncate = async (models) => {
   let modelsToTruncate = models;
@@ -19,28 +19,36 @@ const insert = async ({ modelName, data }) => {
   return result;
 };
 
-// const update = async ({ modelName, conditions = {}, json }) => {
-//   // const result = await modelList[modelName].query().patch(json).where(conditions);
-//   // await connection.client.pool.release();
-//   // return result;
-// };
+const insertMany = async ({ modelName, data }) => {
+  const result = await prisma[modelName].createMany({ data });
+  await prisma.$disconnect();
+  return result;
+};
 
-// const find = async ({ modelName, conditions = {} }) => {
-//   // const result = await modelList[modelName].query().where(conditions);
-//   // await connection.client.pool.release();
-//   // return result;
-// };
+const update = async ({ modelName, conditions = {}, data }) => {
+  const result = await prisma[modelName].updateMany({ where: conditions, data });
+  await prisma.$disconnect();
+  return result;
+};
 
-// const deleteRecords = async ({ modelName, conditions = {} }) => {
-//   // const result = await modelList[modelName].query().delete().where(conditions);
-//   // await connection.client.pool.release();
-//   // return result;
-// };
+const find = async ({ modelName, conditions = {} }) => {
+  const result = await prisma[modelName].findMany({ where: conditions });
+  await prisma.$disconnect();
+  return result;
+};
+
+const deleteRecords = async ({ modelName, conditions = {} }) => {
+  // const result = await modelList[modelName].query().delete().where(conditions);
+  const result = await prisma[modelName].deleteMany({ where: conditions });
+  await prisma.$disconnect();
+  return result;
+};
 
 module.exports = {
-  // find,
-  // deleteRecords,
+  find,
+  deleteRecords,
   insert,
+  insertMany,
   truncate,
-  // update,
+  update,
 };

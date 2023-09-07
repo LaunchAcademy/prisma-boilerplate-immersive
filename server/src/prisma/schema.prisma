@@ -39,8 +39,8 @@ model User {
   updatedAt           DateTime  @default(now()) @db.Timestamp(6)
   albums              Album[]
   votes               Vote[]
-  sentMessages      Message[] @relation("sender")
-  receivedMessages   Message[] @relation("recipient")
+  sentMessages        Message[] @relation("sender")
+  receivedMessages    Message[] @relation("recipient")
 }
 
 model Vote {

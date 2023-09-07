@@ -1,6 +1,6 @@
 import express from "express";
 
-import prisma from "../../../prisma/prisma.js";
+import prisma from "../../../prisma/prisma.cjs";
 
 import cleanUserInput from "../../../services/cleanUserInput.js";
 import uploadImage from "../../../services/uploadImage.js";
