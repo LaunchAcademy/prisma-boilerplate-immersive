@@ -7,7 +7,6 @@ const truncate = async (models) => {
   // if (!Array.isArray(modelsToTruncate)) {
   //   modelsToTruncate = [modelsToTruncate];
   // }
-
   // for (const model of modelsToTruncate) {
   //   await truncateModel(modelList[model]);
   // }

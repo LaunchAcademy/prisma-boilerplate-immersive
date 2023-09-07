@@ -1,12 +1,12 @@
-import express from "express"
-import prisma from "../../../prisma/prisma.js"
+import express from "express";
+import prisma from "../../../prisma/prisma.js";
 
 const albumSongsRouter = new express.Router({ mergeParams: true });
 
 albumSongsRouter.post("/", async (req, res) => {
-    const { body } = req
-    const { name, isCool, plays, description } = body
-    const albumId = req.params.albumId
+  const { body } = req;
+  const { name, isCool, plays, description } = body;
+  const albumId = req.params.albumId;
 
   try {
     const newSong = await prisma.song.create({

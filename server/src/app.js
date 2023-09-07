@@ -21,7 +21,7 @@ app.engine(
   hbsMiddleware({
     defaultLayout: "default",
     extname: ".hbs",
-  })
+  }),
 );
 app.set("view engine", "hbs");
 app.use(logger("dev"));
@@ -30,7 +30,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 app.use(
   bodyParser.urlencoded({
     extended: true,
-  })
+  }),
 );
 app.use(bodyParser.json());
 addMiddlewares(app);

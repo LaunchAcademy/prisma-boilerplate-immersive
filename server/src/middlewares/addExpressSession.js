@@ -8,7 +8,7 @@ const addExpressSession = (app) => {
       keys: [configuration.session.secret],
       resave: true,
       maxAge: configuration.maxAge,
-    })
+    }),
   );
 };
 

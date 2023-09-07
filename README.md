@@ -10,9 +10,7 @@ yarn dev
 ```
 
 ### Missing
+
 - serialization (likely omit)
 - yup frontend validation
 - cypress db utilities
-
-
-

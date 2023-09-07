@@ -2,7 +2,6 @@ import express from "express";
 
 import prisma from "../../../prisma/prisma.js";
 
-
 const songVotesRouter = new express.Router({ mergeParams: true });
 
 songVotesRouter.post("/", async (req, res) => {
