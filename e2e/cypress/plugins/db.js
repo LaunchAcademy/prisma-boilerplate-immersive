@@ -1,20 +1,15 @@
 const prisma = require("../../../server/src/prisma/prisma.cjs");
-const getModelNames = require("../../../server/src/boot/getModelNames.cjs");
+// const getModelNames = require("../../../server/src/boot/getModelNames.cjs");
 const truncateModel = require("../../../server/test/utils/truncateModel.cjs");
 
 const truncate = async (models) => {
-  const modelList = await getModelNames();
   let modelsToTruncate = models;
   if (!Array.isArray(modelsToTruncate)) {
     modelsToTruncate = [modelsToTruncate];
   }
 
   const modelString = modelsToTruncate.map((name) => `"public"."${name}"`).join(", ");
-  // console.log("models", modelList);
-  // console.log("model", modelString);
-  // console.log("model???", modelList[modelString]);
   await truncateModel(modelString);
-  // await truncateModel(modelList[modelString]);
   await prisma.$disconnect();
   return 1;
 };
@@ -52,7 +47,6 @@ const find = async ({ modelName, conditions = {} }) => {
 };
 
 const deleteRecords = async ({ modelName, conditions = {} }) => {
-  // const result = await modelList[modelName].query().delete().where(conditions);
   const result = await prisma[modelName].deleteMany({ where: conditions });
   await prisma.$disconnect();
   return result;

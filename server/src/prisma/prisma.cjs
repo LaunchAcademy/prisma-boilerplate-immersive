@@ -1,4 +1,3 @@
-// commonjs version of prisma initialization for cypress to use
 const bcrypt = require("bcrypt");
 const { PrismaClient } = require("@prisma/client");
 
