@@ -1,4 +1,4 @@
-import prisma from "./prisma.js";
+import prisma from "./prisma.cjs";
 
 const main = async () => {
   const kerrin = await prisma.user.upsert({
@@ -6,7 +6,7 @@ const main = async () => {
     update: {},
     create: {
       email: "kerrin@email.com",
-      cryptedPassword: "password",
+      password: "password",
       albums: {
         create: {
           name: "Help",
@@ -28,7 +28,7 @@ const main = async () => {
     update: {},
     create: {
       email: "nick@email.com",
-      cryptedPassword: "password",
+      password: "password",
       albums: {
         create: {
           name: "The Good Life",
