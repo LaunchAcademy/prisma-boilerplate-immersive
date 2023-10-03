@@ -1,7 +1,12 @@
-import yup from "yup";
+import Schema from "./Schema.js";
 
-const AlbumSchema = yup.object().shape({
-  name: yup.string().required(),
-})
+class AlbumSchema extends Schema { 
+  
+  static get yupSchema(){
+    return this.yup.object().shape({
+      name: this.yup.string().required().unique({ model: "Album" }),
+    })
+  }
+}
 
 export default AlbumSchema;
