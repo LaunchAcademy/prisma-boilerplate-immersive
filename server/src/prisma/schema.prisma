@@ -8,12 +8,12 @@ datasource db {
 }
 
 model Song {
-  id          Int      @id @default(autoincrement()) 
-  name        String   @db.VarChar(255) @unique
+  id          Int      @id @default(autoincrement())
+  name        String   @unique @db.VarChar(255)
   description String?  @db.Text
-  plays       Int?     @db.Integer 
+  plays       Int?     @db.Integer
   isCool      Boolean  @default(true)
-  albumId     Int      
+  albumId     Int
   album       Album    @relation(fields: [albumId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   createdAt   DateTime @default(now()) @db.Timestamp(6)
   updatedAt   DateTime @default(now()) @db.Timestamp(6)
@@ -21,26 +21,26 @@ model Song {
 }
 
 model Album {
-  id          Int      @id @default(autoincrement()) 
-  name        String   @db.VarChar(255) @unique
-  image       String?  @db.VarChar(255)
-  userId      Int
-  user        User     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  createdAt   DateTime @default(now()) @db.Timestamp(6)
-  updatedAt   DateTime @default(now()) @db.Timestamp(6)
-  songs       Song[]
+  id        Int      @id @default(autoincrement())
+  name      String   @unique @db.VarChar(255)
+  image     String?  @db.VarChar(255)
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime @default(now()) @db.Timestamp(6)
+  songs     Song[]
 }
 
 model User {
-  id                  Int       @id @default(autoincrement()) 
-  email               String    @db.VarChar(255) @unique
-  cryptedPassword     String    @db.VarChar(255)
-  createdAt           DateTime  @default(now()) @db.Timestamp(6)
-  updatedAt           DateTime  @default(now()) @db.Timestamp(6)
-  albums              Album[]
-  votes               Vote[]
-  sentMessages      Message[] @relation("sender")
-  receivedMessages   Message[] @relation("recipient")
+  id               Int       @id @default(autoincrement())
+  email            String    @unique @db.VarChar(255)
+  cryptedPassword  String    @db.VarChar(255)
+  createdAt        DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt        DateTime  @default(now()) @db.Timestamp(6)
+  albums           Album[]
+  votes            Vote[]
+  sentMessages     Message[] @relation("sender")
+  receivedMessages Message[] @relation("recipient")
 }
 
 model Vote {
