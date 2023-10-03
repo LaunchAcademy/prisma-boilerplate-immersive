@@ -4,9 +4,6 @@ const mutativeActions = ["create", "update", "upsert", "createMany"];
 
 class MissingSchemaError extends Error {}
 
-
-// test with createMany: we may need to account for arrays! 
-
 const customMutativeQueries = {}
 mutativeActions.forEach(action => {
   customMutativeQueries[action] = async ({ model, operation, args, query }) => {
@@ -20,7 +17,13 @@ mutativeActions.forEach(action => {
 
     let transformedData;
     try {
-      transformedData = await modelSchema.yupSchema.validate(args.data, { abortEarly: false });
+      if (args.data instanceof Array) {
+        for (let dataObject of args.data){
+          transformedData = await modelSchema.yupSchema.validate(dataObject, { abortEarly: false });
+        }
+      } else {
+        transformedData = await modelSchema.yupSchema.validate(args.data, { abortEarly: false });
+      }
     } catch (error) {
       console.log("strange errors", error)
       throw new ValidationError(error.errors);
