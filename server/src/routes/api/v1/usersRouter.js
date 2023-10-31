@@ -1,8 +1,7 @@
 import express from "express";
 import { Prisma } from "@prisma/client";
 
-import AuthService from "./../../../authentication/AuthService.js";
-import prisma from "../../../prisma/prisma.js";
+import prisma from "../../../prisma/prisma.cjs";
 
 import userMessagesRouter from "./userMessagesRouter.js";
 
@@ -40,10 +39,12 @@ usersRouter.get("/:id", async (req, res) => {
 });
 
 usersRouter.post("/", async (req, res) => {
-  // const { email, password, passwordConfirmation } = req.body;
   try {
-    // const persistedUser = await User.query().insertAndFetch({ email, password });
-    const persistedUser = await AuthService.register(req.body);
+    // replaced AuthService register by extending prisma
+    const { email, password } = req.body;
+    const persistedUser = await prisma.user.create({
+      data: { email, password },
+    });
     return req.login(persistedUser, () => {
       return res.status(201).json({ user: persistedUser });
     });

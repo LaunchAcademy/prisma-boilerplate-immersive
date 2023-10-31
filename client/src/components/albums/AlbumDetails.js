@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import NewSongForm from "../songs/NewSongForm";
 import SongTile from "../songs/SongTile";
@@ -13,8 +13,7 @@ const AlbumShow = (props) => {
   });
   const [songToEdit, setSongToEdit] = useState({});
   const [errors, setErrors] = useState({});
-
-  const { id: albumId } = useParams();
+  const { id: albumId } = props.match.params;
 
   const getAlbum = async () => {
     try {

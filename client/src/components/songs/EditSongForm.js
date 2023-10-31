@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 
 const EditSongForm = ({ songToEdit, patchSong }) => {
-  const [song, setSong] = useState({
+  const defaultForm = {
     name: songToEdit.name,
     description: songToEdit.description || "",
     plays: songToEdit.plays || 0,
     isCool: songToEdit.isCool,
-  });
+  };
+  const [song, setSong] = useState(defaultForm);
 
   const handleInputChange = (event) => {
     setSong({
@@ -22,12 +23,7 @@ const EditSongForm = ({ songToEdit, patchSong }) => {
   };
 
   const clearForm = () => {
-    setSong({
-      name: songToEdit.name,
-      description: songToEdit.description,
-      plays: songToEdit.plays,
-      isCool: songToEdit.isCool,
-    });
+    setSong(defaultForm);
   };
 
   return (
