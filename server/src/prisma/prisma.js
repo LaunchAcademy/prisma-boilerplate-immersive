@@ -1,5 +1,7 @@
-import { PrismaClient } from "@prisma/client"
+import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient()
+import yupValidationPrismaClient from "./config/yupValidationPrismaClient.js";
 
-export default prisma
+const prisma = new PrismaClient().$extends(yupValidationPrismaClient);
+
+export default prisma;

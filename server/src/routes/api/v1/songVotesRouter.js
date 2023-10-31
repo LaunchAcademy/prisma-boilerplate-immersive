@@ -2,8 +2,6 @@ import express from "express";
 
 import prisma from "../../../prisma/prisma.js";
 
-import cleanUserInput from "../../../services/cleanUserInput.js";
-
 const songVotesRouter = new express.Router({ mergeParams: true });
 
 songVotesRouter.post("/", async (req, res) => {
@@ -11,8 +9,7 @@ songVotesRouter.post("/", async (req, res) => {
     const { body, user } = req;
     const songId = parseInt(req.params.songId);
 
-    const cleanedFormData = cleanUserInput(body);
-    const { voteValue } = cleanedFormData;
+    const { voteValue } = body;
 
     // queue up query for song to recalculate vote totals
     const songQuery = prisma.song.findUnique({
