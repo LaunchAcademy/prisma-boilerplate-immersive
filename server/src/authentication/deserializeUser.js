@@ -7,7 +7,7 @@ export default async (id, done) => {
     },
   });
 
-  if (user.cryptedPassword) {
+  if (user && user.cryptedPassword) {
     delete user.cryptedPassword;
   }
 

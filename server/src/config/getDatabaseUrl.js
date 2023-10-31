@@ -8,4 +8,4 @@ const getDatabaseUrl = (nodeEnv) => {
   );
 };
 
-module.exports = getDatabaseUrl;
+export default getDatabaseUrl;

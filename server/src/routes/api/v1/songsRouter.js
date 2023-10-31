@@ -1,6 +1,6 @@
 import express from "express";
 
-import prisma from "../../../prisma/prisma.cjs";
+import prisma from "../../../prisma/prisma.js";
 
 import songVotesRouter from "./songVotesRouter.js";
 

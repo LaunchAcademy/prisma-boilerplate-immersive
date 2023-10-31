@@ -9,7 +9,7 @@ import FormError from "../layout/FormError";
 const RegistrationForm = () => {
   const [userPayload, setUserPayload] = useState({
     email: "",
-    password: "",
+    cryptedPassword: "",
     passwordConfirmation: "",
   });
 
@@ -20,7 +20,7 @@ const RegistrationForm = () => {
 
   const validateInput = (payload) => {
     setErrors({});
-    const { email, password, passwordConfirmation } = payload;
+    const { email, cryptedPassword, passwordConfirmation } = payload;
     const emailRegexp = config.validation.email.regexp.emailRegex;
     let newErrors = {};
     if (!email.match(emailRegexp)) {
@@ -30,7 +30,7 @@ const RegistrationForm = () => {
       };
     }
 
-    if (password.trim() == "") {
+    if (cryptedPassword.trim() == "") {
       newErrors = {
         ...newErrors,
         password: "is required",
@@ -43,7 +43,7 @@ const RegistrationForm = () => {
         passwordConfirmation: "is required",
       };
     } else {
-      if (passwordConfirmation !== password) {
+      if (passwordConfirmation !== cryptedPassword) {
         newErrors = {
           ...newErrors,
           passwordConfirmation: "does not match password",
@@ -62,6 +62,7 @@ const RegistrationForm = () => {
     event.preventDefault();
 
     try {
+      console.log(validateInput(userPayload))
       if (validateInput(userPayload)) {
         const response = await fetch("/api/v1/users", {
           method: "POST",
@@ -80,7 +81,6 @@ const RegistrationForm = () => {
           const error = new Error(errorMessage);
           throw error;
         }
-        const userData = await response.json();
         setShouldRedirect(true);
       }
     } catch (err) {
@@ -116,8 +116,8 @@ const RegistrationForm = () => {
             Password
             <input
               type="password"
-              name="password"
-              value={userPayload.password}
+              name="cryptedPassword"
+              value={userPayload.cryptedPassword}
               onChange={onInputChange}
             />
             <FormError error={errors.password} />

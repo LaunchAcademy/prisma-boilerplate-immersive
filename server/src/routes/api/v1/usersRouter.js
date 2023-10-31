@@ -41,9 +41,9 @@ usersRouter.get("/:id", async (req, res) => {
 usersRouter.post("/", async (req, res) => {
   try {
     // replaced AuthService register by extending prisma
-    const { email, password } = req.body;
+    const { email, cryptedPassword } = req.body;
     const persistedUser = await prisma.user.create({
-      data: { email, password },
+      data: { email, cryptedPassword },
     });
     return req.login(persistedUser, () => {
       return res.status(201).json({ user: persistedUser });
