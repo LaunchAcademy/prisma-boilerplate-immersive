@@ -12,20 +12,22 @@ mutativeActions.forEach(action => {
       const { default: schema } = await import(`./../validations/${model}Schema.js`)
       modelSchema = schema
     } catch (error) {
-      throw new MissingSchemaError(`No schema for ${model} detected. Ensure you have defined a Yup schema for the ${model} model with the name '${model}Schema.js' in your validations folder.`)
+      if (error.code === "ERR_MODULE_NOT_FOUND") {
+        throw new MissingSchemaError(`No schema for ${model} detected. Ensure you have defined a Yup schema for the ${model} model with the name '${model}Schema.js' in your validations folder.`)
+      } 
+      throw error
     }
 
     let transformedData;
     try {
       if (args.data instanceof Array) {
-        for (let dataObject of args.data){
-          transformedData = await modelSchema.yupSchema.validate(dataObject, { abortEarly: false });
-        }
+        await Promise.all(args.data.map(async dataObject => {
+          return await modelSchema.yupSchema.validate(dataObject, { abortEarly: false });
+        }))
       } else {
         transformedData = await modelSchema.yupSchema.validate(args.data, { abortEarly: false });
       }
     } catch (error) {
-      console.log("strange errors", error)
       throw new ValidationError(error.errors);
     }
 
@@ -42,4 +44,3 @@ const yupValidationPrismaClient = {
 };
 
 export default yupValidationPrismaClient;
-
