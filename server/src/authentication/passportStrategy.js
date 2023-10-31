@@ -1,6 +1,6 @@
 import local from "passport-local";
 
-import prisma from "./../prisma/prisma.js";
+import prisma from "../prisma/prisma.js";
 import AuthService from "./AuthService.js";
 
 const authHandler = (email, password, done) => {

@@ -1,5 +1,5 @@
 import yup, { Schema as yupSchema } from "yup";
-import prisma from "./../prisma.js"
+import prisma from "../prisma.js"
 
 class Schema { 
   static get yup(){
