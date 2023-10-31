@@ -1,5 +1,5 @@
 import express from "express";
-import prisma from "../../../prisma/prisma.cjs";
+import prisma from "../../../prisma/prisma.js";
 
 const userMessagesRouter = new express.Router({ mergeParams: true });
 

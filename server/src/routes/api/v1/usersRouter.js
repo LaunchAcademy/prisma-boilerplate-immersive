@@ -1,7 +1,7 @@
 import express from "express";
 import { Prisma } from "@prisma/client";
 
-import prisma from "../../../prisma/prisma.cjs";
+import prisma from "../../../prisma/prisma.js";
 
 import userMessagesRouter from "./userMessagesRouter.js";
 

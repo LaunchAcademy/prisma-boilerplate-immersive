@@ -1,6 +1,6 @@
 import "./boot.js";
 import getNodeEnv from "./config/getNodeEnv.js";
-import getDatabaseUrl from "./config/getDatabaseUrl.cjs";
+import getDatabaseUrl from "./config/getDatabaseUrl.js";
 
 const development = {
   awsAccess: { key: process.env.AWS_ACCESS_KEY },

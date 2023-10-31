@@ -1,5 +1,5 @@
 const prisma = require("../../../server/src/prisma/prisma.js");
-const truncateModel = require("../../../server/test/utils/truncateModel.cjs");
+const truncateModel = require("../../../server/test/utils/truncateModel.js");
 
 const truncate = async (models) => {
   let modelsToTruncate = models;
