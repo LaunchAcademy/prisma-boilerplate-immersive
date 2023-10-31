@@ -1,4 +1,4 @@
-const prisma = require("../../src/prisma/prisma.cjs");
+const prisma = require("../../src/prisma/prisma.js");
 
 module.exports = async function truncateModel(modelString) {
   if (process.env.NODE_ENV !== "test" && process.env.NODE_ENV !== "e2e") {

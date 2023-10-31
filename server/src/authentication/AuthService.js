@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import bcrypt from "bcrypt";
-import prisma from "../prisma/prisma.cjs";
+import prisma from "../prisma/prisma.js";
 
 class AuthService {
   // replaced register by extending prisma
