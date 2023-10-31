@@ -1,7 +1,7 @@
 import repl from "repl";
 import { connection } from "./boot.js";
 
-import prisma from "./prisma/prisma.cjs";
+import prisma from "./prisma/prisma.js";
 
 const replServer = repl.start({
   prompt: "> ",
