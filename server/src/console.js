@@ -1,5 +1,4 @@
 import repl from "repl";
-import { connection } from "./boot.js";
 
 import prisma from "./prisma/prisma.js";
 
@@ -8,6 +7,6 @@ const replServer = repl.start({
 });
 
 replServer.context.prisma = prisma;
-replServer.on("close", () => {
-  connection.destroy();
+replServer.on("close", async () => {
+  await prisma.$disconnect();
 });
