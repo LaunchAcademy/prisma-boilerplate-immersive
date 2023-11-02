@@ -6,9 +6,3 @@ datasource db {
   provider = "postgresql"
   url      = "postgres://postgres:postgres@localhost:5432/prisma-test_development"
 }
-
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-}
